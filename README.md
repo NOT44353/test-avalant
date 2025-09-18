@@ -102,14 +102,53 @@ VITE_WS_URL=ws://localhost:3001
 
 ## 🧪 Testing
 
+### Local Testing
 ```bash
 # Run all tests
 npm test
 
+# Run tests with coverage
+npm run test:coverage
+
+# Run tests in watch mode
+npm run test:watch
+
 # Run specific test suites
 npm run test:backend
 npm run test:frontend
+
+# Run linting
+npm run lint
+
+# Fix linting issues
+npm run lint:fix
+
+# Check code formatting
+npm run format:check
+
+# Format code
+npm run format
+
+# Run full CI pipeline locally
+npm run ci
 ```
+
+### GitHub Actions Testing
+โปรเจคนี้มีการทดสอบอัตโนมัติผ่าน GitHub Actions:
+
+- **การทดสอบ**: รันทุกครั้งที่ push หรือ pull request
+- **Backend Tests**: ทดสอบ Node.js backend ด้วย Jest
+- **Frontend Tests**: ทดสอบ React frontend ด้วย Vitest
+- **Code Quality**: ตรวจสอบ ESLint, Prettier, และ TypeScript
+
+#### ไฟล์ Workflow:
+- `.github/workflows/test.yml` - การทดสอบหลัก
+- `.github/workflows/code-quality.yml` - ตรวจสอบคุณภาพโค้ด
+
+#### ดูผลการทดสอบ:
+1. ไปที่แท็บ "Actions" ใน GitHub repository
+2. คลิกที่ workflow run เพื่อดูผลลัพธ์
+3. ตรวจสอบสถานะการทดสอบในแต่ละขั้นตอน
 
 ## 🚀 Production Deployment
 
@@ -141,7 +180,7 @@ npm run build
 │   │   └── utils/          # Utilities
 │   ├── tests/              # Frontend tests
 │   └── package.json
-├── .github/workflows/      # CI/CD configuration
+├── .github/workflows/      # GitHub Actions workflows
 └── README.md
 ```
 
