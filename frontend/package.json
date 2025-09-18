@@ -15,7 +15,7 @@
   "dependencies": {
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
-    "react-router-dom": "^6.17.0",
+    "react-router-dom": "^7.9.1",
     "react-window": "^1.8.8",
     "react-window-infinite-loader": "^1.0.9",
     "recharts": "^2.8.0",
