@@ -1,0 +1,428 @@
+openapi: 3.0.0
+info:
+  title: Full-Stack Coding Challenges API
+  description: API documentation for the three coding challenges
+  version: 1.0.0
+  contact:
+    name: Developer
+    email: developer@example.com
+
+servers:
+  - url: http://localhost:3001
+    description: Development server
+
+paths:
+  # Challenge 1: Data Processing
+  /dev/seed:
+    post:
+      summary: Seed database with sample data
+      description: Generates users, orders, and products for testing
+      parameters:
+        - name: users
+          in: query
+          required: true
+          schema:
+            type: integer
+            minimum: 1
+            maximum: 100000
+          description: Number of users to generate
+        - name: orders
+          in: query
+          required: true
+          schema:
+            type: integer
+            minimum: 1
+            maximum: 1000000
+          description: Number of orders to generate
+        - name: products
+          in: query
+          required: true
+          schema:
+            type: integer
+            minimum: 1
+            maximum: 50000
+          description: Number of products to generate
+      responses:
+        '200':
+          description: Database seeded successfully
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                  counts:
+                    type: object
+                    properties:
+                      users:
+                        type: integer
+                      orders:
+                        type: integer
+                      products:
+                        type: integer
+
+  /api/users:
+    get:
+      summary: Get paginated users with order aggregations
+      description: Returns users with server-side pagination, sorting, and filtering
+      parameters:
+        - name: page
+          in: query
+          required: false
+          schema:
+            type: integer
+            minimum: 1
+            default: 1
+          description: Page number (1-based)
+        - name: pageSize
+          in: query
+          required: false
+          schema:
+            type: integer
+            minimum: 1
+            maximum: 200
+            default: 50
+          description: Number of items per page
+        - name: search
+          in: query
+          required: false
+          schema:
+            type: string
+          description: Search term for name or email
+        - name: sortBy
+          in: query
+          required: false
+          schema:
+            type: string
+            enum: [name, email, createdAt, orderTotal]
+            default: name
+          description: Field to sort by
+        - name: sortDir
+          in: query
+          required: false
+          schema:
+            type: string
+            enum: [asc, desc]
+            default: asc
+          description: Sort direction
+      responses:
+        '200':
+          description: Users retrieved successfully
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  items:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/UserRow'
+                  total:
+                    type: integer
+                  page:
+                    type: integer
+                  pageSize:
+                    type: integer
+
+  /api/users/{id}/orders:
+    get:
+      summary: Get orders for a specific user
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+          description: User ID
+        - name: page
+          in: query
+          required: false
+          schema:
+            type: integer
+            minimum: 1
+            default: 1
+        - name: pageSize
+          in: query
+          required: false
+          schema:
+            type: integer
+            minimum: 1
+            maximum: 200
+            default: 50
+      responses:
+        '200':
+          description: User orders retrieved successfully
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  items:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/Order'
+                  total:
+                    type: integer
+                  page:
+                    type: integer
+                  pageSize:
+                    type: integer
+
+  # Challenge 2: Tree Hierarchy
+  /dev/seed:
+    post:
+      summary: Generate tree structure
+      description: Creates a balanced tree with specified breadth and depth
+      parameters:
+        - name: breadth
+          in: query
+          required: false
+          schema:
+            type: integer
+            minimum: 1
+            maximum: 50
+            default: 20
+          description: Number of children per node
+        - name: depth
+          in: query
+          required: false
+          schema:
+            type: integer
+            minimum: 1
+            maximum: 15
+            default: 10
+          description: Maximum depth of the tree
+      responses:
+        '200':
+          description: Tree generated successfully
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                  counts:
+                    type: object
+                    properties:
+                      nodes:
+                        type: integer
+
+  /api/nodes/root:
+    get:
+      summary: Get root nodes
+      responses:
+        '200':
+          description: Root nodes retrieved successfully
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  items:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/Node'
+
+  /api/nodes/{id}/children:
+    get:
+      summary: Get children of a node
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+          description: Node ID
+      responses:
+        '200':
+          description: Node children retrieved successfully
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  items:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/Node'
+
+  /api/search:
+    get:
+      summary: Search nodes
+      parameters:
+        - name: q
+          in: query
+          required: true
+          schema:
+            type: string
+          description: Search query
+        - name: limit
+          in: query
+          required: false
+          schema:
+            type: integer
+            minimum: 1
+            maximum: 1000
+            default: 100
+          description: Maximum number of results
+      responses:
+        '200':
+          description: Search results retrieved successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SearchResponse'
+
+  # Challenge 3: Real-time Dashboard
+  /api/quotes/snapshot:
+    get:
+      summary: Get current quote snapshot
+      parameters:
+        - name: symbols
+          in: query
+          required: true
+          schema:
+            type: string
+          description: Comma-separated list of symbols
+      responses:
+        '200':
+          description: Quote snapshot retrieved successfully
+          content:
+            application/json:
+              schema:
+                type: object
+                additionalProperties:
+                  $ref: '#/components/schemas/Quote'
+
+  /api/quotes/symbols:
+    get:
+      summary: Get available symbols
+      responses:
+        '200':
+          description: Available symbols retrieved successfully
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  symbols:
+                    type: array
+                    items:
+                      type: string
+
+  /ws/quotes:
+    get:
+      summary: WebSocket endpoint for real-time quotes
+      description: WebSocket connection for receiving real-time quote updates
+      responses:
+        '101':
+          description: Switching Protocols
+        '400':
+          description: Bad Request - Invalid WebSocket upgrade
+
+components:
+  schemas:
+    User:
+      type: object
+      properties:
+        id:
+          type: integer
+        name:
+          type: string
+        email:
+          type: string
+        createdAt:
+          type: string
+          format: date-time
+
+    UserRow:
+      allOf:
+        - $ref: '#/components/schemas/User'
+        - type: object
+          properties:
+            orderCount:
+              type: integer
+            orderTotal:
+              type: number
+
+    Order:
+      type: object
+      properties:
+        id:
+          type: integer
+        userId:
+          type: integer
+        productId:
+          type: integer
+        amount:
+          type: number
+        createdAt:
+          type: string
+          format: date-time
+
+    Product:
+      type: object
+      properties:
+        id:
+          type: integer
+        name:
+          type: string
+        price:
+          type: number
+
+    Node:
+      type: object
+      properties:
+        id:
+          type: string
+        parentId:
+          type: string
+          nullable: true
+        name:
+          type: string
+        hasChildren:
+          type: boolean
+
+    SearchResult:
+      type: object
+      properties:
+        id:
+          type: string
+        name:
+          type: string
+        path:
+          type: array
+          items:
+            type: object
+            properties:
+              id:
+                type: string
+              name:
+                type: string
+
+    SearchResponse:
+      type: object
+      properties:
+        items:
+          type: array
+          items:
+            $ref: '#/components/schemas/SearchResult'
+
+    Quote:
+      type: object
+      properties:
+        symbol:
+          type: string
+        price:
+          type: number
+        ts:
+          type: string
+          format: date-time
+
+  securitySchemes:
+    ApiKeyAuth:
+      type: apiKey
+      in: header
+      name: X-API-Key

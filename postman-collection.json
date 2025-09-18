@@ -1,0 +1,207 @@
+{
+  "info": {
+    "name": "Full-Stack Coding Challenges API",
+    "description": "Collection for testing all three challenges",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "item": [
+    {
+      "name": "Challenge 1: Data Processing",
+      "item": [
+        {
+          "name": "Seed Data",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/dev/seed?users=50000&orders=500000&products=10000",
+              "host": ["{{baseUrl}}"],
+              "path": ["dev", "seed"],
+              "query": [
+                {"key": "users", "value": "50000"},
+                {"key": "orders", "value": "500000"},
+                {"key": "products", "value": "10000"}
+              ]
+            }
+          }
+        },
+        {
+          "name": "Get Users (Paginated)",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/users?page=1&pageSize=50&sortBy=name&sortDir=asc",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "users"],
+              "query": [
+                {"key": "page", "value": "1"},
+                {"key": "pageSize", "value": "50"},
+                {"key": "sortBy", "value": "name"},
+                {"key": "sortDir", "value": "asc"}
+              ]
+            }
+          }
+        },
+        {
+          "name": "Search Users",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/users?page=1&pageSize=50&search=User 1&sortBy=name&sortDir=asc",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "users"],
+              "query": [
+                {"key": "page", "value": "1"},
+                {"key": "pageSize", "value": "50"},
+                {"key": "search", "value": "User 1"},
+                {"key": "sortBy", "value": "name"},
+                {"key": "sortDir", "value": "asc"}
+              ]
+            }
+          }
+        },
+        {
+          "name": "Get User Orders",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/users/1/orders?page=1&pageSize=50",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "users", "1", "orders"],
+              "query": [
+                {"key": "page", "value": "1"},
+                {"key": "pageSize", "value": "50"}
+              ]
+            }
+          }
+        },
+        {
+          "name": "Get Products",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/products",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "products"]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Challenge 2: Tree Hierarchy",
+      "item": [
+        {
+          "name": "Seed Tree",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/dev/seed?breadth=20&depth=10",
+              "host": ["{{baseUrl}}"],
+              "path": ["dev", "seed"],
+              "query": [
+                {"key": "breadth", "value": "20"},
+                {"key": "depth", "value": "10"}
+              ]
+            }
+          }
+        },
+        {
+          "name": "Get Root Nodes",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/nodes/root",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "nodes", "root"]
+            }
+          }
+        },
+        {
+          "name": "Get Node Children",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/nodes/node_1/children",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "nodes", "node_1", "children"]
+            }
+          }
+        },
+        {
+          "name": "Search Nodes",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/search?q=Node&limit=100",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "search"],
+              "query": [
+                {"key": "q", "value": "Node"},
+                {"key": "limit", "value": "100"}
+              ]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Challenge 3: Real-time Dashboard",
+      "item": [
+        {
+          "name": "Get Quote Snapshot",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/quotes/snapshot?symbols=AAPL,MSFT,GOOG",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "quotes", "snapshot"],
+              "query": [
+                {"key": "symbols", "value": "AAPL,MSFT,GOOG"}
+              ]
+            }
+          }
+        },
+        {
+          "name": "Get Available Symbols",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/quotes/symbols",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "quotes", "symbols"]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Health Check",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "{{baseUrl}}/health",
+          "host": ["{{baseUrl}}"],
+          "path": ["health"]
+        }
+      }
+    }
+  ],
+  "variable": [
+    {
+      "key": "baseUrl",
+      "value": "http://localhost:3001"
+    }
+  ]
+}
